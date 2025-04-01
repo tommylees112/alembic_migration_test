@@ -11,4 +11,5 @@ dependencies = [
     "psycopg2>=2.9.10",
     "dotenv>=0.9.9",
     "python-dotenv>=1.0.0",
+    "alembic-utils>=0.8.6",
 ]
