@@ -1,26 +1,37 @@
+import os
+import sys
 from logging.config import fileConfig
 
+import dotenv
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+
+# Load .env file
+dotenv.load_dotenv()
+
+# Add parent directory to path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# Inject environment variables for database connection
+section = config.config_ini_section
+config.set_section_option(section, "DB_USER", os.getenv("DB_USER", "tommy"))
+config.set_section_option(section, "DB_PASS", os.getenv("DB_PASS", "1234"))
+config.set_section_option(section, "DB_NAME", os.getenv("DB_NAME", "alembic_migrate"))
+config.set_section_option(section, "DB_HOST", os.getenv("DB_HOST", "localhost"))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-import os
-
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from alembic_migrate.models import Base
 
 target_metadata = Base.metadata
@@ -29,11 +40,6 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-
-section = config.config_ini_section
-config.set_section_option(section, "DB_USER", os.environ.get("DB_USER", "user"))
-config.set_section_option(section, "DB_PASS", os.environ.get("DB_PASS", "pass"))
-config.set_section_option(section, "DB_NAME", os.environ.get("DB_NAME", "dbname"))
 
 
 def run_migrations_offline() -> None:

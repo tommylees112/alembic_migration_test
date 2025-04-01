@@ -1,14 +1,23 @@
 import os
 
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+# Load environment variables from .env
+load_dotenv()
+
 # Create base class for declarative models
 Base = declarative_base()
 
-# Define database connection - update with your actual Postgres credentials
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://user:pass@localhost/dbname")
+# Define database connection using environment variables
+DB_USER = os.getenv("DB_USER", "tommy")
+DB_PASS = os.getenv("DB_PASS", "1234")
+DB_NAME = os.getenv("DB_NAME", "alembic_migrate")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+
+DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
 
 # Create engine
 engine = create_engine(DATABASE_URL)
