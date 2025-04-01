@@ -27,10 +27,10 @@ class Post(Base):
     author = relationship("User", back_populates="posts")
 
 
-# SQLAlchemy model for the view
+# SQLAlchemy representation of our analytics view
+# The actual view definition is in views.py
 class ActiveUser(Base):
     __tablename__ = "active_users"
-    # Important: This tells SQLAlchemy this is a view
     __table_args__ = {"info": {"is_view": True}}
 
     id = Column(Integer, primary_key=True)

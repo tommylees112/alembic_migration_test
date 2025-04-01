@@ -36,6 +36,13 @@ from alembic_migrate.models import Base
 
 target_metadata = Base.metadata
 
+# Register alembic_utils entities for autogeneration
+from alembic_utils.replaceable_entity import register_entities
+
+from alembic_migrate.views import active_users_view
+
+register_entities([active_users_view])
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
